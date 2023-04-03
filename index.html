@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>City weather</title>
+</head>
+<body>
+    <div class="container">
+        <section class="sectionMain">
+            <section class="sec1">
+                <div>
+                <h1>Weather on Your City</h1>    
+                <lottie-player src="https://assets1.lottiefiles.com/temp/lf20_dgjK9i.json"  background="transparent"  speed="1"  id="lottie" loop autoplay></lottie-player>
+                </div>
+                <div class="sec1-sub">
+                    <input id="cities" placeholder="Enter city name" type="text">
+                    <button onclick="search()" id="find" type="button">Find</button>
+                </div>
+            </section>
+           <section class="sec2">
+            <div class="p" id="temp">29°</div>
+            <div class="p" id="names">Delhi-IN</div>
+            <div class="p" id="wind_speed">Wind Speed: 2.57kmph</div>
+            <div class="p" id="weather">Weather: Haze</div>
+            <div class="p" id="pressure">Pressure: 1008</div>
+            <div class="p" id="humidity">Humidity: 42%</div>
+           </section>
+        </section >
+        <p id="dates"></p>
+    </div>
+</body>
+<script>
+    var date= new Date()
+    dates.innerHTML = date
+async function search()
+{
+
+    //console.log("jomson");
+    let city = cities.value
+    if(city){
+    let result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e`)
+    result.json().then((result)=>{
+        // console.log(result);
+        display(result)
+    }) 
+    } else {
+        alert("Enter Valid Location")
+    }  
+    function display(data){
+        cities.value = ""
+        names.innerHTML = data.name+"-"+data.sys.country
+        temp.innerHTML = Math.trunc(data.main.temp-273.15)+"\u00B0"
+        wind_speed.innerHTML = "Wind Speed: "+data.wind.speed+"kmph"
+        weather.innerHTML = "Weather: "+data.weather[0].main
+        pressure.innerHTML = "Pressure: "+data.main.pressure
+        humidity.innerHTML = "Humidity: "+data.main.humidity+"%"
+        var date1= new Date()
+        dates.innerHTML = date1
+    }
+}
+</script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</html>
